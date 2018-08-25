@@ -7,9 +7,9 @@ import  openpyxl
 
 #jsvar=loader_1534681413266_87398998
 comments=pd.DataFrame(columns=["page","nick","area","time","content"])
-
+complexComments=pd.DataFrame(columns=['page',"jsons","cmntlist","replydict"])
 try:
-    for page in range(0,5):
+    for page in range(0,150):
         start=int(time.time())*1000   #time()返回当前时间的时间戳（1970纪元后经过的浮点秒数）--整数部分10位
         end_stamp=start+random.randint(100,1000)
         end=str(end_stamp)[-8:]     #根据jsvar的参数看出后面的终点时戳是八位int
@@ -20,9 +20,11 @@ try:
         json_dict=json.loads(r[34:])    #json.loads()根据字符串加载json
         cmntlist=json_dict["result"]["cmntlist"]     #根据"微博评论json图"找到评论集合
         replydict=json_dict["result"]["replydict"]
-        # comments=comments.append({"page":page+1,"nick":json_dict,"cmntlist":cmntlist,"replydict":replydict},ignore_index=True)
+        #cmntlist放在一列
+        complexComments=complexComments.append({"page":page+1,"jsons":json_dict,"cmntlist":cmntlist,"replydict":replydict},ignore_index=True)
         for num,cmnt in enumerate(cmntlist):
             print(page*20+num+1,page+1,cmnt["nick"],cmnt["area"],cmnt["time"],cmnt["content"])
+            #将cmntlist进一步拆分
             comments = comments.append({"page":page+1,"nick":cmnt["nick"],"area":cmnt["area"],
                                         "time":cmnt["time"],"content":cmnt["content"]},ignore_index=True)
         if page%5==0:
@@ -32,7 +34,8 @@ except:
 
 
 # comments.to_csv("Sina_Finance_Comments_qzq2514_20180819.csv",index=False,encoding="gb2312")
-comments.to_excel("Sina_Finance_Comments_qzq2514_20180819.xlsx",index=False,encoding="gb2312")
+comments.to_excel("Comments_qzq2514_20180819.xlsx",index=False,encoding="gb2312")
+complexComments.to_excel("complexComments_qzq2514_20180819.xlsx",index=False,encoding="gb2312")
 # print(random.randint(100,1000))
 
 
