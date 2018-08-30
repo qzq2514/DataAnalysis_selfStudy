@@ -38,6 +38,13 @@ def getProvinces():
 
 provincesList=getProvinces()
 
+#或者直接使用这种手动获取的方法
+# provincesList='北京市，天津市，上海市，重庆市，河北省，山西省，辽宁省，吉林省，江苏省，浙江省，安徽省，福建省，\
+# 江西省，山东省，河南省，湖北省，湖南省，广东省，海南省，四川省，贵州省，云南省，陕西省，甘肃省，\
+# 青海省，台湾省，广西，西藏，宁夏，新疆，香港，澳门，内蒙古，黑龙江省'
+# # prolist=prolist.replace('市', '').replace('省', '').split('，')
+#
+# provincesList=provincesList.replace("省","").replace("市","").split("，")
 
 #处理"city_coordinates.json"文件中不存在的地区
 def handleJson(addr):
@@ -54,14 +61,14 @@ def handleJson(addr):
     with open(path,"w",encoding='utf-8') as fw:
         fw.write(json.dumps(data_new,ensure_ascii=False))
 
-#根据表格中的日期进行处理
+#根据表格中的地址进行处理
 def handleArea(addr):
     tempS=addr
     if addr[:2] in provincesList:
         tempS =addr[2:]
     elif addr[:3] in provincesList:
         tempS = addr[3:]
-    else:                   #三个字锁着前两个字都不是省，说明是国外，返回空
+    else:                   #三个字或者前两个字都不是省，说明是国外，返回空
         return np.NaN
 
     res=""

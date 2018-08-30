@@ -25,7 +25,9 @@ line=Line("每小时评论数")
 line.add("小时",perHourCount.index,perHourCount.values,line_type="dotted",is_datazoom_show=True)
 line.render("每小时评论变化折线图.html")
 
-df.to_excel("commentsList.xlsx",index=False,encoding="gb2312")
+
+
+
 
 
 

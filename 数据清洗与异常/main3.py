@@ -44,8 +44,13 @@ plt.show()              #简单画出评论数随时间变化图
 
 df["time_mdh"]=df.time.apply(lambda x:x.split(":")[0][5:])   #截取时间中的月日和时间，例如08-09 15:32:28
 df_mdhmax=df.groupby("time_mdh")["cmntcount"].max()      #得到截止到该小时的总评论数
-df_mdhcount=df.groupby("time_mdh")["cmntcount"].count()  #得到该小时内的总评论数  ,
-                                                    # 都返回Series，index是每组的"cmntcount"，元素是每组的max，count
+df_mdhcount=df.groupby("time_mdh")["cmntcount"].count()
+#df.groupby()返回一个元素是tuple的DataFrameGroupBy，tuple第一个元素是按照分组的那个值，这里就是time_mdh，tuple第二个元素是该组下的
+#DataFrame(原DataFrame除去time_mdh一列)
+#df.groupby("time_mdh")["cmntcount"]返回的是每个元素是tuple的SeriesGroupBy，tuple第一个元素是按照分组的那个值，即time_mdh
+#第二个元素就是该组下的["cmntcount"]，就相当于df.groupby()每组中的DataFrame都只保留"cmntcount"列
+#追后加上.count()返回一个Series，index是每组的"time_mdh"，values就是得到以time_mdh分组后每组的"cmntcount"列的个数
+
 
 #使用pyecharts显示图片
 print(type(df_mdhcount))
